@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="abfd6a28-6a61-4858-ab77-e875ac21b0a3" name="Changes" comment="first commit">
-      <change afterPath="$PROJECT_DIR$/Users/cringe.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lastUser.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Contact.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PhoneBook.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Session.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/User.java" afterDir="false" />
+    <list default="true" id="abfd6a28-6a61-4858-ab77-e875ac21b0a3" name="Changes" comment="login, signup, contacts, edit contact, print">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Users/cringe.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Users/cringe.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MenuPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MenuPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PhoneBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PhoneBook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Session.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,38 +78,33 @@
       <option name="project" value="LOCAL" />
       <updated>1722423848789</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="login, signup, contacts, edit contact, print">
+      <option name="closed" value="true" />
+      <created>1723752549123</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1723752549123</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="first commit" />
+    <MESSAGE value="login, signup, contacts, edit contact, print" />
+    <option name="LAST_COMMIT_MESSAGE" value="login, signup, contacts, edit contact, print" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/User.java</url>
-          <line>25</line>
-          <properties class="User" method="writeFile">
+          <url>file://$PROJECT_DIR$/src/Session.java</url>
+          <line>263</line>
+          <properties class="Session" method="searchContact">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/Session.java</url>
-          <line>149</line>
-          <properties class="Session" method="session">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Session.java</url>
-          <line>260</line>
-          <option name="timeStamp" value="18" />
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

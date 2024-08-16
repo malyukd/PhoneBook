@@ -129,6 +129,26 @@ public class MenuPrinter {
                         "|_________________________________________________|"
         );
     }
+    public void sortingNameAZ(){
+        System.out.println(
+                " _________________________________________________\n" +
+                        "|                                                 |\n" +
+                        "|               << Phone book  >>                 |\n" +
+                        "|             You sort Name A to Z                |\n" +
+                        "|_________________________________________________|\n"
+
+        );
+    }
+    public void sortingNameZA(){
+        System.out.println(
+                " _________________________________________________\n" +
+                        "|                                                 |\n" +
+                        "|               << Phone book  >>                 |\n" +
+                        "|             You sort Name Z to A                |\n" +
+                        "|_________________________________________________|\n"
+
+        );
+    }
     public void sortingSurname(){
         System.out.println(
                 " _________________________________________________\n" +
@@ -145,6 +165,26 @@ public class MenuPrinter {
                         "|_________________________________________________|"
         );
     }
+    public void sortingSurnameAZ(){
+        System.out.println(
+                " _________________________________________________\n" +
+                        "|                                                 |\n" +
+                        "|               << Phone book  >>                 |\n" +
+                        "|            You sort Surname Z to A              |\n" +
+                        "|_________________________________________________|\n"
+
+        );
+    }
+    public void sortingSurnameZA(){
+        System.out.println(
+                " _________________________________________________\n" +
+                        "|                                                 |\n" +
+                        "|               << Phone book  >>                 |\n" +
+                        "|            You sort Surname Z to A              |\n" +
+                        "|_________________________________________________|\n"
+
+        );
+    }
     public void sortingNumber(){
         System.out.println(
                 " _________________________________________________\n" +
@@ -159,6 +199,26 @@ public class MenuPrinter {
                         "|-------------------------------------------------|\n" +
                         "|  1 - Number       ( Sort  9 - 1 )               |\n" +
                         "|_________________________________________________|"
+        );
+    }
+    public void sortingNumber19(){
+        System.out.println(
+                " _________________________________________________\n" +
+                        "|                                                 |\n" +
+                        "|               << Phone book  >>                 |\n" +
+                        "|             You sort Number 1 to 9              |\n" +
+                        "|_________________________________________________|\n"
+
+        );
+    }
+    public void sortingNumber91(){
+        System.out.println(
+                " _________________________________________________\n" +
+                        "|                                                 |\n" +
+                        "|               << Phone book  >>                 |\n" +
+                        "|             You sort Number 9 to 1              |\n" +
+                        "|_________________________________________________|\n"
+
         );
     }
     public void searchMenu(){

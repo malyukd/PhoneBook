@@ -29,7 +29,7 @@ public class User {
             String text = name +"\n"+login+"\n"+password+"\n\n";
             fw.write(text);
             for(int i=0; i< phoneBook.size(); i++){
-                fw.write(phoneBook.get(i).toString());
+                fw.write(phoneBook.get(i).toString()+"\n");
             }
         }
         catch(IOException ex){

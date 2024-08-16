@@ -80,5 +80,8 @@ public class PhoneBook {
             System.out.println(c.toString());
         }
     }
+    List<Contact> getList(){
+        return book;
+    }
 
 }

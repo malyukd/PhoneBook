@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -212,6 +213,9 @@ public class Session {
             case(2):
                 printMenu();
                 break;
+            case(3):
+                sortingMenu();
+                break;
             case (5):
                 try (FileWriter writer = new FileWriter(lastUser, false)) {
                     writer.write("");
@@ -258,18 +262,28 @@ public class Session {
                 return true;
     }
     private int searchContact(){
-        System.out.println("0 - Найти по номеру телефона\"1 - Найти по имени и фамилии");
+        System.out.println("0 - Найти по номеру телефона\n1 - Найти по имени и фамилии");
         int input2 = input(0,1);
         int ind =0;
+        String sc;
         switch(input2){
             case(0):
                 System.out.println("Введите номер телефона");
-                ind = currentUser.phoneBook.searchContactbyNumber(scanner.nextLine());
+                sc="";
+                while(sc=="") {
+                    sc=scanner.nextLine();
+                }
+                ind = currentUser.phoneBook.searchContactbyNumber(sc);
                 break;
             case(1):
                 System.out.println("Введите имя и фамилию через пробел");
-                ind = currentUser.phoneBook.searchContactbyName(scanner.nextLine());
+                sc = "";
+                while(sc=="") {
+                    sc=scanner.nextLine();
+                }
+                ind = currentUser.phoneBook.searchContactbyName(sc);
                 break;
+
         }
         return ind;
     }
@@ -286,21 +300,25 @@ public class Session {
               ind = searchContact();
               System.out.println("Введите новое имя контакта");
               currentUser.phoneBook.editName(ind, scanner.nextLine());
+              editContact();
               break;
             case(1):
                 ind = searchContact();
                 System.out.println("Введите новую фамилию контакта");
                 currentUser.phoneBook.editName(ind, scanner.nextLine());
+                editContact();
                 break;
             case(2):
                 ind = searchContact();
                 System.out.println("Введите новый номер телефона контакта");
                 currentUser.phoneBook.editName(ind, scanner.nextLine());
+                editContact();
                 break;
             case(3):
                 ind = searchContact();
                 System.out.println("Введите новую информацию");
                 currentUser.phoneBook.editName(ind, scanner.nextLine());
+                editContact();
                 break;
         }
         return true;
@@ -314,10 +332,90 @@ public class Session {
                 break;
             case(0):
                 currentUser.phoneBook.printAll();
+                printMenu();
                 break;
         }
         return true;
     }
+    private boolean sortingMenu(){
+        mp.sortingMenu();
+        int input = input(-1, 2);
+        switch (input){
+            case(-1):
+                mainMenu();
+                break;
+            case(0):
+                sortingName();
+                break;
+            case(1):
+                sortingSurname();
+                break;
+            case(2):
+                sortingNumber();
+                break;
+        }
+        return true;
+    }
+    private boolean sortingName(){
+        mp.sortingName();
+        int input = input(-1, 1);
+        switch(input){
+            case(-1):
+                sortingMenu();
+                break;
+            case(0):
+                mp.sortingNameAZ();
+                currentUser.phoneBook.getList().stream().sorted((x,y)->x.name.compareTo(y.name)).forEach(x-> System.out.println(x.toString()));
+                sortingName();
+                break;
+            case(1):
+                mp.sortingNameZA();
+                currentUser.phoneBook.getList().stream().sorted((x,y)->y.name.compareTo(x.name)).forEach(x-> System.out.println(x.toString()));
+                sortingName();
+                break;
+        }
+        return true;
 
+    }
+    private boolean sortingSurname() {
+        mp.sortingSurname();
+        int input = input(-1, 1);
+        switch (input) {
+            case (-1):
+                sortingMenu();
+                break;
+            case (0):
+                mp.sortingSurnameAZ();
+                currentUser.phoneBook.getList().stream().sorted((x, y) -> x.surname.compareTo(y.surname)).forEach(x -> System.out.println(x.toString()));
+                sortingSurname();
+                break;
+            case (1):
+                mp.sortingSurnameZA();
+                currentUser.phoneBook.getList().stream().sorted((x, y) -> y.surname.compareTo(x.surname)).forEach(x -> System.out.println(x.toString()));
+                sortingSurname();
+                break;
+        }
+        return true;
+    }
+    private boolean sortingNumber() {
+        mp.sortingNumber();
+        int input = input(-1, 1);
+        switch (input) {
+            case (-1):
+                sortingMenu();
+                break;
+            case (0):
+                mp.sortingNumber19();
+                currentUser.phoneBook.getList().stream().sorted((x, y) -> x.number.compareTo(y.number)).forEach(x -> System.out.println(x.toString()));
+                sortingNumber();
+                break;
+            case (1):
+                mp.sortingNumber91();
+                currentUser.phoneBook.getList().stream().sorted((x, y) -> y.number.compareTo(x.number)).forEach(x -> System.out.println(x.toString()));
+                sortingNumber();
+                break;
+        }
+        return true;
+    }
 
 }

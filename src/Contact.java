@@ -8,7 +8,7 @@ public class Contact {
         this.name = name;
         this.surname = surname;
     }
-    public String toString(){
+    public String toString(){//преобразует контакт в строку
         return number + " " + name + " " + surname;
     }
 }

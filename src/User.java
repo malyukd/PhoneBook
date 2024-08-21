@@ -7,7 +7,7 @@ public class User {
     private String name;
     public String login;
     private String password;
-    File file;
+    private File file;
     public PhoneBook phoneBook;
     User(String name, String login, String password, File file){
         this.name = name;
@@ -22,7 +22,7 @@ public class User {
         }else{
             return false;
         }
-    }
+    }//проверяет верный ли пароль
     public boolean writeFile(){
         try(FileWriter fw = new FileWriter(file, false))
         {
@@ -37,7 +37,7 @@ public class User {
             return false;
         }
         return true;
-    }
+    }//записывает данные юзера в файл
 
 
 

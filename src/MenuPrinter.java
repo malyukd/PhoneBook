@@ -1,4 +1,4 @@
-public class MenuPrinter {
+public class MenuPrinter { //печатает интерфейс
     public void chooseAction() {
         System.out.println(
                 " _________________________________________________\n" +

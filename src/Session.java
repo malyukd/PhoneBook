@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Session {
     private final File users;
@@ -13,26 +14,48 @@ public class Session {
     private final MenuPrinter mp;
 
     Session() {
-        this.users = new File("C:\\Users\\daram\\IdeaProjects\\PhoneBook\\Users");
+        this.users = new File("Users");
         this.scanner = new Scanner(System.in);
         this.userList = new ArrayList<>();
         this.mp = new MenuPrinter();
-        this.lastUser = new File("C:\\Users\\daram\\IdeaProjects\\PhoneBook\\lastUser.txt");
+        this.lastUser = new File("lastUser.txt");
     }
 
+    public void session() {
+        readUsers();
+        try (BufferedReader br = new BufferedReader(new FileReader(lastUser))) {
+            String s = br.readLine();
+            if (s == null) {
+                chooseAction();
+            } else {
+                for (User tmp : userList) {
+                    if (s.equals(tmp.login)) {
+                        currentUser = tmp;
+                        mainMenu();
+                    }
+                }
+                chooseAction();
+            }
+        } catch (IOException ex) {
+            System.out.println("Произошла ошибка считывания файла lastUser");
+            chooseAction();
+        }
+    } //главный метод, точка старта программы
     private boolean isLoginExist(String login) {
         String[] files = users.list();
+        if(files==null){
+            return false;
+        }
         for (String tmp : files) {
             if (tmp.equals(login + ".txt")) {
                 return true;
             }
         }
         return false;
-    }
-
+    } //проверяет наличие файла с данным логином в папке Users
     private boolean readUsers() {
         File[] files = users.listFiles();
-        if (files.length == 0)
+        if (files == null)
             return false;
         for (File tmp : files) {
             try (BufferedReader br = new BufferedReader(new FileReader(tmp))) {
@@ -54,8 +77,34 @@ public class Session {
             }
         }
         return true;
-    }
+    } //читает информацию из файлов пользователей
 
+    private void chooseAction() {
+        mp.chooseAction();
+        int input = input(0, 3);
+        switch (input) {
+            case (0):
+                break;
+            case (1):
+                if(signIn()){
+                    mainMenu();
+                }else{
+                    chooseAction();
+                }
+                break;
+            case (2):
+                if(signUp()){
+                    mainMenu();
+                }else{
+                    chooseAction();
+                }
+                break;
+            case (3):
+                printUsers();
+                chooseAction();
+                break;
+        }
+    } //реализует меню chooseAction
     private boolean signIn() {
         System.out.println("Введите логин");
         String login = scanner.nextLine();
@@ -81,8 +130,7 @@ public class Session {
         }
         System.out.println("Пользователя с логином \"" + login + "\" не существует");
         return false;
-    }
-
+    } //реализует вход в аккаунт
     private boolean signUp() {
         System.out.println("Введите логин");
         String login = scanner.nextLine();
@@ -115,7 +163,7 @@ public class Session {
         while (!password.equals(scanner.nextLine())) {
             System.out.println("Пароли не совпадают. Повторите попытку позже");
         }
-        File user = new File("C:\\Users\\daram\\IdeaProjects\\PhoneBook\\Users\\" + login + ".txt");
+        File user = new File("Users\\" + login + ".txt");
         try {
             user.createNewFile();
         } catch (Exception ex) {
@@ -127,74 +175,14 @@ public class Session {
         userList.add(x);
         x.writeFile();
         return true;
-    }
-
+    } //реализует создание аккаунта
     private void printUsers() {
         for (User tmp : userList) {
             System.out.println(tmp.login);
         }
-    }
+    } //выводит список пользователей
 
-    private int input(int a, int b) {
-        int number;
-        do {
-            System.out.println("Пожалуйста введите число от " + a + " до " + b);
-            while (!scanner.hasNextInt()) {
-                System.out.println("Пожалуйста введите число от " + a + " до " + b);
-                scanner.next();
-            }
-            number = scanner.nextInt();
-        } while (number < a || number > b);
-        return number;
-    }
-
-    public boolean session() {
-        readUsers();
-        try (BufferedReader br = new BufferedReader(new FileReader(lastUser))) {
-            String s = br.readLine();
-            if (s == null) {
-                chooseAction();
-            } else {
-                for (User tmp : userList) {
-                    if (s.equals(tmp.login)) {
-                        currentUser = tmp;
-                        mainMenu();
-                        return true;
-                    }
-                }
-                System.out.println("Произошла ошибка считывания файла lastUser");
-                chooseAction();
-            }
-        } catch (IOException ex) {
-            System.out.println("Произошла ошибка считывания файла lastUser");
-            chooseAction();
-        }
-        return true;
-    }
-
-    private boolean chooseAction() {
-        mp.chooseAction();
-        int input = input(0, 3);
-        switch (input) {
-            case (0):
-                break;
-            case (1):
-                signIn();
-                mainMenu();
-                break;
-            case (2):
-                signUp();
-                mainMenu();
-                break;
-            case (3):
-                printUsers();
-                chooseAction();
-                break;
-        }
-        return true;
-    }
-
-    private boolean mainMenu() {
+    private void mainMenu() {
         mp.mainMenu();
         int input = input(0, 5);
         switch (input) {
@@ -204,7 +192,8 @@ public class Session {
                     writer.flush();
                     writer.close();
                 } catch (IOException ex) {
-                    return true;
+                    System.out.println("Произошла ошибка записи файла lastUser");
+                    mainMenu();
                 }
                 break;
             case (1):
@@ -216,20 +205,36 @@ public class Session {
             case(3):
                 sortingMenu();
                 break;
+            case(4):
+                searchMenu();
+                break;
             case (5):
                 try (FileWriter writer = new FileWriter(lastUser, false)) {
                     writer.write("");
                     writer.flush();
                     writer.close();
                 } catch (IOException ex) {
-                    return true;
+                    System.out.println("Произошла ошибка записи файла lastUser");
+                    mainMenu();
                 }
                 chooseAction();
                 break;
         }
-        return true;
-    }
-    private boolean contactMenu(){
+    } //реализует меню mainMenu
+    private int input(int a, int b) {
+        int number;
+        do {
+            System.out.println("Пожалуйста введите число от " + a + " до " + b);
+            while (!scanner.hasNextInt()) {
+                System.out.println("Пожалуйста введите число от " + a + " до " + b);
+                scanner.next();
+            }
+            number = scanner.nextInt();
+        } while (number < a || number > b);
+        return number;
+    } //реализует ввод
+
+    private void contactMenu(){
         mp.contactMenu();
         int input = input(-1,2);
         switch (input){
@@ -259,8 +264,42 @@ public class Session {
                 contactMenu();
                 break;
         }
-                return true;
-    }
+    } //реализует меню contactMenu
+    private void editContact(){
+        mp.editContact();
+        int input = input(-1,3);
+        int ind=0;
+        switch (input){
+            case(-1):
+                currentUser.writeFile();
+                contactMenu();
+                break;
+            case(0):
+                ind = searchContact();
+                System.out.println("Введите новое имя контакта");
+                currentUser.phoneBook.editName(ind, scanner.nextLine());
+                editContact();
+                break;
+            case(1):
+                ind = searchContact();
+                System.out.println("Введите новую фамилию контакта");
+                currentUser.phoneBook.editSurname(ind, scanner.nextLine());
+                editContact();
+                break;
+            case(2):
+                ind = searchContact();
+                System.out.println("Введите новый номер телефона контакта");
+                currentUser.phoneBook.editNumber(ind, scanner.nextLine());
+                editContact();
+                break;
+            case(3):
+                ind = searchContact();
+                System.out.println("Введите новую информацию");
+                currentUser.phoneBook.editAll(ind, scanner.nextLine());
+                editContact();
+                break;
+        }
+    } //реализует меню editContact
     private int searchContact(){
         System.out.println("0 - Найти по номеру телефона\n1 - Найти по имени и фамилии");
         int input2 = input(0,1);
@@ -286,44 +325,9 @@ public class Session {
 
         }
         return ind;
-    }
-    private boolean editContact(){
-        mp.editContact();
-        int input = input(-1,3);
-        int ind=0;
-        switch (input){
-            case(-1):
-              currentUser.writeFile();
-              contactMenu();
-              break;
-            case(0):
-              ind = searchContact();
-              System.out.println("Введите новое имя контакта");
-              currentUser.phoneBook.editName(ind, scanner.nextLine());
-              editContact();
-              break;
-            case(1):
-                ind = searchContact();
-                System.out.println("Введите новую фамилию контакта");
-                currentUser.phoneBook.editName(ind, scanner.nextLine());
-                editContact();
-                break;
-            case(2):
-                ind = searchContact();
-                System.out.println("Введите новый номер телефона контакта");
-                currentUser.phoneBook.editName(ind, scanner.nextLine());
-                editContact();
-                break;
-            case(3):
-                ind = searchContact();
-                System.out.println("Введите новую информацию");
-                currentUser.phoneBook.editName(ind, scanner.nextLine());
-                editContact();
-                break;
-        }
-        return true;
-    }
-    private boolean printMenu(){
+    } //реализует поиск по контактам
+
+    private void printMenu(){
         mp.printMenu();
         int input = input(-1, 1);
         switch(input){
@@ -334,10 +338,41 @@ public class Session {
                 currentUser.phoneBook.printAll();
                 printMenu();
                 break;
+            case(1):
+                System.out.println("Введите маску поиска. * - любое кол-во символов, _ - один любой символ");
+                String s="";
+                while(s==""){
+                    s=scanner.nextLine();
+                }
+                printSpecific(s);
+                printMenu();
+                break;
+
         }
-        return true;
-    }
-    private boolean sortingMenu(){
+    } //реализует меню printMenu
+    private void printSpecific(String regex) {
+        String pattern = "";
+        for (int i = 0; i < regex.length(); i++) {
+            if (regex.charAt(i) == '*') {
+                pattern += ".+";
+            } else {
+                if (regex.charAt(i) == '_') {
+                    pattern += ".{1}";
+                } else {
+                    pattern += regex.charAt(i);
+                }
+            }
+        }
+        String s;
+        for (Contact tmp : currentUser.phoneBook.getList()) {
+            s = tmp.toString();
+            if (Pattern.matches(pattern, s)) {
+                System.out.println(s);
+            }
+        }
+    } //реализует функцию print specific
+
+    private void sortingMenu(){
         mp.sortingMenu();
         int input = input(-1, 2);
         switch (input){
@@ -354,9 +389,8 @@ public class Session {
                 sortingNumber();
                 break;
         }
-        return true;
-    }
-    private boolean sortingName(){
+    } //реализует меню sortingMenu
+    private void sortingName(){
         mp.sortingName();
         int input = input(-1, 1);
         switch(input){
@@ -374,10 +408,9 @@ public class Session {
                 sortingName();
                 break;
         }
-        return true;
 
-    }
-    private boolean sortingSurname() {
+    } //реализует меню sortingName
+    private void sortingSurname() {
         mp.sortingSurname();
         int input = input(-1, 1);
         switch (input) {
@@ -395,9 +428,8 @@ public class Session {
                 sortingSurname();
                 break;
         }
-        return true;
-    }
-    private boolean sortingNumber() {
+    } //реализует меню sortingSurname
+    private void sortingNumber() {
         mp.sortingNumber();
         int input = input(-1, 1);
         switch (input) {
@@ -415,7 +447,43 @@ public class Session {
                 sortingNumber();
                 break;
         }
-        return true;
-    }
+    } //реализует меню sortingNumber
 
+    private void searchMenu(){
+        mp.searchMenu();
+        int input = input(-1,2);
+        String sc;
+        switch (input){
+            case(-1):
+                mainMenu();
+                break;
+            case(0):
+                System.out.println("Введите маску поиска. * - любое кол-во символов, _ - один любой символ");
+                sc="";
+                while(sc==""){
+                    sc=scanner.nextLine();
+                }
+                currentUser.phoneBook.searchByName(sc);
+                searchMenu();
+                break;
+            case(1):
+                System.out.println("Введите маску поиска. * - любое кол-во символов, _ - один любой символ");
+                sc="";
+                while(sc==""){
+                    sc=scanner.nextLine();
+                }
+                currentUser.phoneBook.searchBySurname(sc);
+                searchMenu();
+                break;
+            case(2):
+                System.out.println("Введите маску поиска. * - любое кол-во символов, _ - один любой символ");
+                sc="";
+                while(sc==""){
+                    sc=scanner.nextLine();
+                }
+                currentUser.phoneBook.searchByNumber(sc);
+                searchMenu();
+                break;
+        }
+    } //реализует меню searchMenu
 }
